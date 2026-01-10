@@ -19,4 +19,4 @@ CREATE TABLE indicators (
 );
 
 -- Indexing for performance as your feed grows
-CREATE INDEX idx_indicators_pattern ON indicators(pattern);
+CREATE UNIQUE INDEX idx_indicators_pattern ON indicators(pattern);

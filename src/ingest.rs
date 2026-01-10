@@ -2,9 +2,9 @@ use sqlx::PgPool;
 use uuid::Uuid;
 
 pub async fn run_binary_defense_ingest(pool: &PgPool) -> Result<(), Box<dyn std::error::Error>> {
-    let url = "https://www.binarydefense.com/banlist.txt";
-    let response_data = reqwest::get(url).await?;
-    let content = response_data.text().await?;
+let path = "resources/ip-blocklist.txt";
+let content = tokio::fs::read_to_string(path).await
+    .map_err(|e| format!("Failed to read local file at {}: {}", path, e))?;
 
     for line in content.lines() {
         let trimmed = line.trim();
