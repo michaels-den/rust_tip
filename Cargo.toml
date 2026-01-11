@@ -4,8 +4,17 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-sqlx = { version = "0.8", features = ["runtime-tokio", "tls-rustls", "postgres", "macros"] }
+sqlx = { version = "0.8", features = ["runtime-tokio", "tls-rustls", "postgres", "macros","time", "uuid" ] }
 tokio = { version = "1", features = ["full"] }
 reqwest = { version = "0.12", features = ["json"] }
 dotenvy = "0.15"
 uuid = { version = "1.11", features = ["v4"] }
+
+axum = "0.7"
+askama = "0.12"
+tower-http = { version = "0.5", features = ["fs"] }
+serde = { version = "1.0", features = ["derive"] }
+
+time = { version = "0.3", features = ["serde", "formatting"] }
+
+askama_axum = "0.4"

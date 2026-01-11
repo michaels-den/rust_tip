@@ -1,6 +1,7 @@
 use sqlx::PgPool;
 use uuid::Uuid;
 
+// TODO: offload this and other intel-importer functionality into a separate crate
 pub async fn run_binary_defense_ingest(pool: &PgPool) -> Result<(), Box<dyn std::error::Error>> {
 let path = "resources/ip-blocklist.txt";
 let content = tokio::fs::read_to_string(path).await

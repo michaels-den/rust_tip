@@ -20,3 +20,9 @@ DATABASE_URL=postgres://UNAME:PASSWORD@localhost:5432/DB_NAME
 ```
 
 Currently a `cargo run` will load an IP blocklist from Binary Defense; TODO - Build out a smaller, broader example load.
+
+## TODO:
+- [ ] Middlware layer to query DB in rust
+- [ ] Layer to compare a PCAP from the rust-network-analyzer-tool with DB
+- [ ] UI to drop PCAP & provide alert / review?
+- 

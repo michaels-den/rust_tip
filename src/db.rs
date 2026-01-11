@@ -7,7 +7,7 @@ pub async fn setup_pool() -> Result<PgPool, Box<dyn std::error::Error>> {
         .expect("DATABASE_URL must be set in your environment or .env file");
 
     let pool = PgPoolOptions::new()
-        .max_connections(5) // For a TIP sprint, 5 is plenty
+        .max_connections(5) 
         .acquire_timeout(std::time::Duration::from_secs(3))
         .connect(&database_url)
         .await?;
