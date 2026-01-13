@@ -50,6 +50,7 @@
                         <th>ID</th>
                         <th>Pattern</th>
                         <th>Type</th>
+                        <th>Source</th>
                         <th>Created</th>
                     </tr>
                 </thead>
@@ -59,6 +60,7 @@
                         <td>{{ result.id }}</td>
                         <td><code>{{ result.pattern }}</code></td>
                         <td>{{ result.pattern_type }}</td>
+                        <td>{% match result.source %}{% when Some with (src) %}{{ src }}{% when None %}Unknown{% endmatch %}</td>
                         <td>{{ result.created }}</td>
                     </tr>
                     {% endfor %}
@@ -79,6 +81,7 @@
                         <th>ID</th>
                         <th>Pattern</th>
                         <th>Type</th>
+                        <th>Source</th>
                         <th>Created</th>
                     </tr>
                 </thead>
@@ -88,6 +91,7 @@
                         <td>{{ indicator.id }}</td>
                         <td><code>{{ indicator.pattern }}</code></td>
                         <td>{{ indicator.pattern_type }}</td>
+                        <td>{% match indicator.source %}{% when Some with (src) %}{{ src }}{% when None %}Unknown{% endmatch %}</td>
                         <td>{{ indicator.created }}</td>
                     </tr>
                     {% endfor %}

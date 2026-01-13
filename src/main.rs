@@ -25,6 +25,7 @@ struct IndicatorDisplay {
     pattern: String,
     pattern_type: String,
     created: String,
+    source: Option<String>,
 }
 
 #[derive(Deserialize)]
@@ -36,6 +37,8 @@ struct SearchQuery {
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     dotenvy::dotenv().ok();
     let pool = crate::db::setup_pool().await?;
+
+    crate::ingest::run_binary_defense_ingest(&pool).await?;
 
     // Clone the pool for use in multiple route handlers
     let pool_index = pool.clone();
@@ -56,7 +59,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 async fn index_handler(pool: PgPool) -> impl IntoResponse {
     let rows = sqlx::query!(
-        r#"SELECT id, pattern, pattern_type, created FROM indicators ORDER BY created DESC LIMIT 50"#
+        r#"SELECT id, pattern, pattern_type, created, source FROM indicators ORDER BY created DESC LIMIT 50"#
     )
     .fetch_all(&pool)
     .await
@@ -72,6 +75,7 @@ async fn index_handler(pool: PgPool) -> impl IntoResponse {
             pattern: row.pattern,
             pattern_type: row.pattern_type,
             created: formatted_time,
+            source: row.source,
         }
     }).collect();
 
@@ -86,7 +90,7 @@ async fn search_handler(pool: PgPool, Query(params): Query<SearchQuery>) -> impl
     let query = params.q.unwrap_or_default();
 
     let all_rows = sqlx::query!(
-        r#"SELECT id, pattern, pattern_type, created FROM indicators ORDER BY created DESC LIMIT 50"#
+        r#"SELECT id, pattern, pattern_type, created, source FROM indicators ORDER BY created DESC LIMIT 50"#
     )
     .fetch_all(&pool)
     .await
@@ -102,11 +106,12 @@ async fn search_handler(pool: PgPool, Query(params): Query<SearchQuery>) -> impl
             pattern: row.pattern,
             pattern_type: row.pattern_type,
             created: formatted_time,
+            source: row.source,
         }
     }).collect();
 
     let search_rows = sqlx::query!(
-        r#"SELECT id, pattern, pattern_type, created FROM indicators WHERE pattern ILIKE $1 ORDER BY created DESC LIMIT 100"#,
+        r#"SELECT id, pattern, pattern_type, created, source FROM indicators WHERE pattern ILIKE $1 ORDER BY created DESC LIMIT 100"#,
         format!("%{}%", query)
     )
     .fetch_all(&pool)
@@ -123,6 +128,7 @@ async fn search_handler(pool: PgPool, Query(params): Query<SearchQuery>) -> impl
             pattern: row.pattern,
             pattern_type: row.pattern_type,
             created: formatted_time,
+            source: row.source,
         }
     }).collect();
 

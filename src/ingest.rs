@@ -18,14 +18,14 @@ let content = tokio::fs::read_to_string(path).await
 
         sqlx::query!(
             r#"
-            INSERT INTO indicators (id, pattern, pattern_type, name)
+            INSERT INTO indicators (id, pattern, pattern_type, source)
             VALUES ($1, $2, $3, $4)
             ON CONFLICT (pattern) DO NOTHING
             "#,
-            id,              // id
-            stix_pattern,    // pattern
-            "stix",          // pattern_type
-            "Binary Defense" // name
+            id,                    // id
+            stix_pattern,          // pattern
+            "stix",                // pattern_type
+            "binarydefense.com"    // source
         )
         .execute(pool)
         .await?;
@@ -43,7 +43,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_unit_function() {
+    fn test_unit() {
         let result = 1;
         assert_eq!(result, 1);
     }
