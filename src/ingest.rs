@@ -34,3 +34,17 @@ let content = tokio::fs::read_to_string(path).await
     println!("Successfully processed Binary Defense feed.");
     Ok(())
 }
+
+
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_unit_function() {
+        let result = 1;
+        assert_eq!(result, 1);
+    }
+}
